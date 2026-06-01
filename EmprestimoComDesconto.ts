@@ -9,13 +9,13 @@ export class EmprestimoComDesconto extends Emprestimo {
 
     constructor(s: number, n: number, j: number, percentualDesconto: number) {
 
-    // O super irá chamar o construtor da classe base (Emprestimo)
-    super(s, n, j);
-    this.percentualDesconto = percentualDesconto;
+        // O super irá chamar o construtor da classe base (Emprestimo)
+        super(s, n, j);
+        this.percentualDesconto = percentualDesconto;
 
-    // Salvando o 'n' para saber qual é o total de parcelas
-    this.totalParcelas = n;
-    this.parcelaAtual = 1; // Começa na primeira parcela
+        // Salvando o 'n' para saber qual é o total de parcelas
+        this.totalParcelas = n;
+        this.parcelaAtual = 1; // Começa na primeira parcela
     }
 
     // Método getter getPercentualDesconto(): number
@@ -32,15 +32,23 @@ export class EmprestimoComDesconto extends Emprestimo {
         // Se a parcela for maior que 0, significa que o empréstimo ainda não acabou, FALTA PAGAR
         if (parcela > 0) {
 
-        // VERIFICA SE É A ÚLTIMA PARCELA
-        if (this.parcelaAtual === this.totalParcelas) {
-        
-        // APLICA A FÓRMULA DO DESCONTO EXIGIDA NO ENUNCIADO
-        parcela = parcela - (parcela * (this.percentualDesconto / 100));
+            // VERIFICA SE É A ÚLTIMA PARCELA
+            if (this.parcelaAtual === this.totalParcelas) {
+
+                // Guarda o valor apenas para podermos exibir no terminal depois
+                let valorOriginal = parcela;
+
+                // APLICA A FÓRMULA DO DESCONTO EXIGIDA NO ENUNCIADO
+                parcela = parcela - (parcela * (this.percentualDesconto / 100));
+
+                // Saída no terminal:
+                console.log(`[EmprestimoComDesconto] Última parcela detectada. Desconto de ${this.percentualDesconto}% aplicado. Caiu de R$ ${valorOriginal.toFixed(2)} para R$ ${parcela.toFixed(2)}`);
+            }
+
+            // Avança o contador local
+            this.parcelaAtual++;
         }
-        // Avança o contador local
-        this.parcelaAtual++;
-        }
-    return parcela;
+
+        return parcela;
     }
 }

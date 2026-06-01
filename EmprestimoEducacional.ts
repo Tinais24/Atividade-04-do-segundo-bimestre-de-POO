@@ -20,7 +20,7 @@ export class EmprestimoEducacional extends Emprestimo {
         this.saldoAtual = s; // O saldo inicial é o valor de 's'
     }
 
-    // Método Getter exigido na tarefa
+    // Método Getter
     public getPeriodoIsencao(): number {
         return this.periodoIsencao;
     }
@@ -32,10 +32,17 @@ export class EmprestimoEducacional extends Emprestimo {
         // Ele vai retornar 's' (se ainda tiver parcela) ou '0' (se o empréstimo acabou).
         let status = super.proximaParcela();
         
-        // Se status for maior que 0, significa que o empréstimo AINDA NÃO ACABOU
+        // Se o status for maior que 0, significa que o empréstimo AINDA NÃO ACABOU
         if (status > 0) {
-            // Guarduei o valor atual para retornar para a tela (pode ser com ou sem juros)
+            // Guardei o valor atual para retornar para a tela (pode ser com ou sem juros)
             let retorno = this.saldoAtual;
+
+            // Saída no terminal, vai avisar se esta parcela está isenta ou com juros
+            if (this.parcelaAtual <= this.periodoIsencao) {
+                console.log(`[EmprestimoEducacional] Parcela ${this.parcelaAtual}: R$ ${retorno.toFixed(2)} (Isenta de Juros)`);
+            } else {
+                console.log(`[EmprestimoEducacional] Parcela ${this.parcelaAtual}: R$ ${retorno.toFixed(2)} (Aplicado juros de ${this.jurosNormal}%)`);
+            }
 
             // VERIFICAÇÃO DO PERÍODO DE ISENÇÃO:
             // Se a parcela atual já alcançou ou passou do período de isenção, nós preparamos a PRÓXIMA parcela adicionando os juros normais ao saldo.
@@ -50,7 +57,7 @@ export class EmprestimoEducacional extends Emprestimo {
             return retorno;
         }
         
-        // Se o empréstimo acabou (status = 0), retorna 0
+        // Se o empréstimo acabou (status = 0), vai retornar 0
         return 0;
     }
 }
